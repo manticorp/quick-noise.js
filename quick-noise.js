@@ -4,7 +4,7 @@
 // Written by Thom Chiovoloni, dedicated into the public domain (as explained at
 // http://creativecommons.org/publicdomain/zero/1.0/).
 //
-var quickNoise = (function() {
+const quickNoise = (function() {
 	'use strict';
 
 	function buildTable(randFunc) {
@@ -13,18 +13,18 @@ var quickNoise = (function() {
 		}
 		// @NOTE(thom): could optimize this for allocations, but it
 		// shouldn't be near anybody's fast path...
-		var arr = new Array(256).fill(1).map(function(v, i) { return i; });
+		const arr = new Array(256).fill(1).map(function(v, i) { return i; });
 		// shuffle numbers 0 through 255
-		for (var i = arr.length-1; i > 0; --i) {
-			var r = Math.floor(randFunc() * (i+1));
-			var t = arr[r];
+		for (let i = arr.length-1; i > 0; --i) {
+			const r = Math.floor(randFunc() * (i+1));
+			const t = arr[r];
 			arr[r] = arr[i];
 			arr[i] = t;
 		}
 		return arr;
 	}
 
-	var gradBasis = [ 1,1,0, -1,1,0, 1,-1,0, -1,-1,0, 1,0,1, -1,0,1, 1,0,-1, -1,0,-1, 0,1,1, 0,-1,1, 0,1,-1, 0,-1,-1 ]
+	const gradBasis = [ 1,1,0, -1,1,0, 1,-1,0, -1,-1,0, 1,0,1, -1,0,1, 1,0,-1, -1,0,-1, 0,1,1, 0,-1,1, 0,1,-1, 0,-1,-1 ]
 
 	function initTables(tab, permTable, gradTable) {
 		if (tab == null || typeof tab === 'function') {
@@ -34,22 +34,22 @@ var quickNoise = (function() {
 			console.error("create(): Expected array of length 256, got ", tab);
 			tab = buildTable();
 		}
-		for (var i = 0; i < 256; ++i) {
+		for (let i = 0; i < 256; ++i) {
 			permTable[i] = tab[i];
 			permTable[i+256] = tab[i];
 		}
-		var gradIdx = 0;
-		for (var i = 0; i < permTable.length; ++i) {
-			var v = (permTable[i]%12)*3;
+		let gradIdx = 0;
+		for (let i = 0; i < permTable.length; ++i) {
+			const v = (permTable[i]%12)*3;
 			gradTable[gradIdx++] = gradBasis[v];
 			gradTable[gradIdx++] = gradBasis[v+1];
 			gradTable[gradIdx++] = gradBasis[v+2];
 		}
 	}
 
-	var permTableSize = 256*2;
-	var gradTableSize = permTableSize*3;
-	var totalSize = permTableSize + gradTableSize;
+	const permTableSize = 256*2;
+	const gradTableSize = permTableSize*3;
+	const totalSize = permTableSize + gradTableSize;
 
 	//
 	// function quickNoise.create(tableOrRng=Math.random);
@@ -73,9 +73,9 @@ var quickNoise = (function() {
 	//
 
 	function create(tab) {
-		var ab = new ArrayBuffer(totalSize);
-		var permTable = new Uint8Array(ab, 0, permTableSize);
-		var gradTable = new Int8Array(ab, permTableSize, gradTableSize);
+		const ab = new ArrayBuffer(totalSize);
+		const permTable = new Uint8Array(ab, 0, permTableSize);
+		const gradTable = new Int8Array(ab, permTableSize, gradTableSize);
 		initTables(tab, permTable, gradTable);
 
 		function noise(x, y, z, xWrap, yWrap, zWrap) {
@@ -89,64 +89,64 @@ var quickNoise = (function() {
 			y = +y;
 			z = +z;
 
-			var xMask = ((xWrap-1) & 255) >>> 0;
-			var yMask = ((yWrap-1) & 255) >>> 0;
-			var zMask = ((zWrap-1) & 255) >>> 0;
+			const xMask = ((xWrap-1) & 255) >>> 0;
+			const yMask = ((yWrap-1) & 255) >>> 0;
+			const zMask = ((zWrap-1) & 255) >>> 0;
 
-			var px = Math.floor(x);
-			var py = Math.floor(y);
-			var pz = Math.floor(z);
+			const px = Math.floor(x);
+			const py = Math.floor(y);
+			const pz = Math.floor(z);
 
-			var x0 = (px+0) & xMask;
-			var x1 = (px+1) & xMask;
+			const x0 = (px+0) & xMask;
+			const x1 = (px+1) & xMask;
 
-			var y0 = (py+0) & yMask;
-			var y1 = (py+1) & yMask;
+			const y0 = (py+0) & yMask;
+			const y1 = (py+1) & yMask;
 
-			var z0 = (pz+0) & zMask;
-			var z1 = (pz+1) & zMask;
+			const z0 = (pz+0) & zMask;
+			const z1 = (pz+1) & zMask;
 
 			x -= px;
 			y -= py;
 			z -= pz;
 
-			var u = ((x*6.0-15.0)*x + 10.0) * x * x * x;
-			var v = ((y*6.0-15.0)*y + 10.0) * y * y * y;
-			var w = ((z*6.0-15.0)*z + 10.0) * z * z * z;
+			const u = ((x*6.0-15.0)*x + 10.0) * x * x * x;
+			const v = ((y*6.0-15.0)*y + 10.0) * y * y * y;
+			const w = ((z*6.0-15.0)*z + 10.0) * z * z * z;
 
-			var r0 = permTable[x0];
-			var r1 = permTable[x1];
+			const r0 = permTable[x0];
+			const r1 = permTable[x1];
 
-			var r00 = permTable[r0+y0];
-			var r01 = permTable[r0+y1];
-			var r10 = permTable[r1+y0];
-			var r11 = permTable[r1+y1];
+			const r00 = permTable[r0+y0];
+			const r01 = permTable[r0+y1];
+			const r10 = permTable[r1+y0];
+			const r11 = permTable[r1+y1];
 
-			var h000 = permTable[r00+z0] * 3;
-			var h001 = permTable[r00+z1] * 3;
-			var h010 = permTable[r01+z0] * 3;
-			var h011 = permTable[r01+z1] * 3;
-			var h100 = permTable[r10+z0] * 3;
-			var h101 = permTable[r10+z1] * 3;
-			var h110 = permTable[r11+z0] * 3;
-			var h111 = permTable[r11+z1] * 3;
+			const h000 = permTable[r00+z0] * 3;
+			const h001 = permTable[r00+z1] * 3;
+			const h010 = permTable[r01+z0] * 3;
+			const h011 = permTable[r01+z1] * 3;
+			const h100 = permTable[r10+z0] * 3;
+			const h101 = permTable[r10+z1] * 3;
+			const h110 = permTable[r11+z0] * 3;
+			const h111 = permTable[r11+z1] * 3;
 
-			var n000 = gradTable[h000]*(x+0) + gradTable[h000+1]*(y+0) + gradTable[h000+2]*(z+0);
-			var n001 = gradTable[h001]*(x+0) + gradTable[h001+1]*(y+0) + gradTable[h001+2]*(z-1);
-			var n010 = gradTable[h010]*(x+0) + gradTable[h010+1]*(y-1) + gradTable[h010+2]*(z+0);
-			var n011 = gradTable[h011]*(x+0) + gradTable[h011+1]*(y-1) + gradTable[h011+2]*(z-1);
-			var n100 = gradTable[h100]*(x-1) + gradTable[h100+1]*(y+0) + gradTable[h100+2]*(z+0);
-			var n101 = gradTable[h101]*(x-1) + gradTable[h101+1]*(y+0) + gradTable[h101+2]*(z-1);
-			var n110 = gradTable[h110]*(x-1) + gradTable[h110+1]*(y-1) + gradTable[h110+2]*(z+0);
-			var n111 = gradTable[h111]*(x-1) + gradTable[h111+1]*(y-1) + gradTable[h111+2]*(z-1);
+			const n000 = gradTable[h000]*(x+0) + gradTable[h000+1]*(y+0) + gradTable[h000+2]*(z+0);
+			const n001 = gradTable[h001]*(x+0) + gradTable[h001+1]*(y+0) + gradTable[h001+2]*(z-1);
+			const n010 = gradTable[h010]*(x+0) + gradTable[h010+1]*(y-1) + gradTable[h010+2]*(z+0);
+			const n011 = gradTable[h011]*(x+0) + gradTable[h011+1]*(y-1) + gradTable[h011+2]*(z-1);
+			const n100 = gradTable[h100]*(x-1) + gradTable[h100+1]*(y+0) + gradTable[h100+2]*(z+0);
+			const n101 = gradTable[h101]*(x-1) + gradTable[h101+1]*(y+0) + gradTable[h101+2]*(z-1);
+			const n110 = gradTable[h110]*(x-1) + gradTable[h110+1]*(y-1) + gradTable[h110+2]*(z+0);
+			const n111 = gradTable[h111]*(x-1) + gradTable[h111+1]*(y-1) + gradTable[h111+2]*(z-1);
 
-			var n00 = n000 + (n001-n000) * w;
-			var n01 = n010 + (n011-n010) * w;
-			var n10 = n100 + (n101-n100) * w;
-			var n11 = n110 + (n111-n110) * w;
+			const n00 = n000 + (n001-n000) * w;
+			const n01 = n010 + (n011-n010) * w;
+			const n10 = n100 + (n101-n100) * w;
+			const n11 = n110 + (n111-n110) * w;
 
-			var n0 = n00 + (n01-n00) * v;
-			var n1 = n10 + (n11-n10) * v;
+			const n0 = n00 + (n01-n00) * v;
+			const n1 = n10 + (n11-n10) * v;
 
 			return n0 + (n1-n0) * u;
 		}
@@ -170,7 +170,7 @@ var quickNoise = (function() {
 	// version may be created with the `quickNoise.create` function. The table it is
 	// seeded is the one from the `stb_perlin.h` library.
 	//
-	var noise = create([
+	const noise = create([
 		23, 125, 161, 52, 103, 117, 70, 37, 247, 101, 203, 169, 124, 126, 44, 123,
 		152, 238, 145, 45, 171, 114, 253, 10, 192, 136, 4, 157, 249, 30, 35, 72,
 		175, 63, 77, 90, 181, 16, 96, 111, 133, 104, 75, 162, 93, 56, 66, 240,
