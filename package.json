@@ -13,12 +13,18 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/thomcc/quick-noise.js.git"
+    "url": "git+https://github.com/manticorp/quick-noise.js.git"
   },
   "author": "Thom Chiovoloni",
+  "contributors": [
+    {
+      "name": "Harry Mustoe-Playfair",
+      "url": "https://github.com/manticorp"
+    }
+  ],
   "license": "CC0-1.0",
   "bugs": {
-    "url": "https://github.com/thomcc/quick-noise.js/issues"
+    "url": "https://github.com/manticorp/quick-noise.js/issues"
   },
-  "homepage": "https://github.com/thomcc/quick-noise.js#readme"
+  "homepage": "https://github.com/manticorp/quick-noise.js#readme"
 }
