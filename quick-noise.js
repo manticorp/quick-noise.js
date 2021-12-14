@@ -13,7 +13,7 @@ var quickNoise = (function() {
 		}
 		// @NOTE(thom): could optimize this for allocations, but it
 		// shouldn't be near anybody's fast path...
-		var arr = new Array(256).map(function(v, i) { return i; });
+		var arr = new Array(256).fill(1).map(function(v, i) { return i; });
 		// shuffle numbers 0 through 255
 		for (var i = arr.length-1; i > 0; --i) {
 			var r = Math.floor(randFunc() * (i+1));
