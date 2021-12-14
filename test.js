@@ -1,4 +1,5 @@
 (function() {
+    "use strict";
     const tileWidth  = 2048;
     const tileHeight = 2048;
     const multiplier = 50;
