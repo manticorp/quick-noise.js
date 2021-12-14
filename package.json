@@ -1,6 +1,6 @@
 {
   "name": "manticorp-quick-noise-js",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Fast, public domain implementation of perlin noise.",
   "main": "quick-noise.js",
   "scripts": {
